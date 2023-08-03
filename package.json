@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lint:fix": "next lint --fix"
+    "lint:fix": "next lint --fix",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -23,6 +25,20 @@
     "next-auth": "^4.22.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "sass": "^1.64.2",
     "typescript": "5.1.6"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "7.2.0",
+    "@storybook/addon-interactions": "7.2.0",
+    "@storybook/addon-links": "7.2.0",
+    "@storybook/addon-onboarding": "1.0.8",
+    "@storybook/blocks": "7.2.0",
+    "@storybook/nextjs": "7.2.0",
+    "@storybook/react": "7.2.0",
+    "@storybook/testing-library": "0.2.0",
+    "eslint-plugin-storybook": "^0.6.13",
+    "storybook": "7.2.0",
+    "storybook-dark-mode": "^3.0.1"
   }
 }

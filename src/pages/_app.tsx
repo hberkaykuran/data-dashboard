@@ -1,13 +1,53 @@
-import "@/styles/globals.css";
-import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
-export default function App({
-  Component,
-  pageProps: { session, ...pageProps },
-}: AppProps) {
-  return (
-    <SessionProvider session={session}>
-      <Component {...pageProps} />;
-    </SessionProvider>
+import React, { createContext, useMemo, useState } from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { CssBaseline } from "@mui/material";
+import darkTheme from "@/theme/darkTheme";
+import lightTheme from "@/theme/lightTheme";
+import Header from "@/components/Header";
+import { AppProps } from "next/app";
+
+const ColorModeContext = createContext({
+  toggleColorMode: () => {},
+});
+
+const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
+  const [mode, setMode] = useState<"light" | "dark">("dark");
+  const colorMode = useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+      },
+    }),
+    []
   );
-}
+
+  const darkThemeChosen = useMemo(
+    () =>
+      createTheme({
+        ...darkTheme,
+      }),
+    [mode]
+  );
+  const lightThemeChosen = useMemo(
+    () =>
+      createTheme({
+        ...lightTheme,
+      }),
+    [mode]
+  );
+  return (
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider
+        theme={mode === "dark" ? darkThemeChosen : lightThemeChosen}
+      >
+        <SessionProvider session={session}>
+          <CssBaseline />
+          <Header ColorModeContext={ColorModeContext} />
+          <Component {...pageProps} />
+        </SessionProvider>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
+  );
+};
+export default App;

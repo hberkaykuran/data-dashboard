@@ -13,12 +13,18 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useSession, signIn, signOut } from "next-auth/react";
+import ToggleThemeButton from "@/components/ToggleThemeButton";
+import { Context } from "react";
+import { useMediaQuery } from "@mui/material";
 
 const pages = ["Products", "Pricing", "Blog"];
+export type HeaderProps = {
+  ColorModeContext: Context<{ toggleColorMode: () => void }>;
+};
 
-function Header() {
+function Header({ ColorModeContext }: HeaderProps) {
   const { data: session } = useSession();
-
+  const tabletCheck = useMediaQuery("(min-width:768px)");
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -61,7 +67,7 @@ function Header() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            DupeX
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -117,7 +123,7 @@ function Header() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            DupeX
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
@@ -130,10 +136,12 @@ function Header() {
               </Button>
             ))}
           </Box>
-          {/* email of user */}
-          <Box sx={{ marginRight: 2 }}>
-            <Typography>Signed in as {session?.user?.email}</Typography>
-          </Box>
+          {tabletCheck && (
+            <Box sx={{ marginRight: 2 }}>
+              <Typography>Signed in as {session?.user?.email}</Typography>
+            </Box>
+          )}
+          <ToggleThemeButton ColorModeContext={ColorModeContext} />
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open profile settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
