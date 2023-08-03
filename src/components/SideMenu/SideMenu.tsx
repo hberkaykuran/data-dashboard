@@ -19,7 +19,12 @@ import { signOut } from "next-auth/react";
 export const drawerWidth = 240;
 const menuRouteList = ["analytics", "profile", "settings", ""];
 const menuListTranslations = ["Analytics", "Profile", "Settings", "Sign Out"];
-const menuListIcons = [<Equalizer />, <Person />, <Settings />, <ExitToApp />];
+const menuListIcons = [
+  <Equalizer key={"Analytics"} />,
+  <Person key={"Profile"} />,
+  <Settings key={"Settings"} />,
+  <ExitToApp key={"Sign Out"} />,
+];
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,

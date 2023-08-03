@@ -15,7 +15,6 @@ const Login = () => {
   }
   return (
     <>
-      <h2>Please sign in</h2> <br />
       <Button variant="contained" color="primary" onClick={() => signIn()}>
         Sign in
       </Button>
