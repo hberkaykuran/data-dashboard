@@ -1,7 +1,7 @@
 import { SessionProvider } from "next-auth/react";
 import React, { createContext, useMemo, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, StyledEngineProvider } from "@mui/material";
 import darkTheme from "@/theme/darkTheme";
 import lightTheme from "@/theme/lightTheme";
 import Header from "@/components/Header";
@@ -38,19 +38,21 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
     []
   );
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider
-        theme={mode === "dark" ? darkThemeChosen : lightThemeChosen}
-      >
-        <SessionProvider session={session}>
-          <CssBaseline />
-          <Header ColorModeContext={ColorModeContext} />
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </SessionProvider>
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+    <StyledEngineProvider injectFirst>
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider
+          theme={mode === "dark" ? darkThemeChosen : lightThemeChosen}
+        >
+          <SessionProvider session={session}>
+            <CssBaseline />
+            <Header ColorModeContext={ColorModeContext} />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </SessionProvider>
+        </ThemeProvider>
+      </ColorModeContext.Provider>
+    </StyledEngineProvider>
   );
 };
 export default App;
