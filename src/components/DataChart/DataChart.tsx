@@ -1,20 +1,22 @@
 import type { ChartConfiguration } from "chart.js";
 import { Chart, registerables } from "chart.js";
-import { useEffect, useRef } from "react";
-import { darkOptions } from "./Themes";
+import { memo, useEffect, useRef } from "react";
 import { months } from "@/helper/Util";
 
 const DataChart = (props: ChartConfiguration) => {
-  const { data, options } = props;
-  const chartRef = useRef<HTMLCanvasElement>(null);
+  const chartRef = useRef<HTMLCanvasElement | null>(null);
   const labels = months({ count: 7 });
+
   useEffect(() => {
     if (chartRef.current) {
       const chart = new Chart(chartRef.current, {
         ...props,
         options: {
-          ...options,
-          ...darkOptions,
+          animation: {
+            // animate data change
+            duration: 500,
+          },
+          ...props.options,
         },
       });
 
@@ -22,9 +24,11 @@ const DataChart = (props: ChartConfiguration) => {
         chart.destroy();
       };
     }
-  }, [data, options, props]);
+  }, [props]);
 
   return <canvas ref={chartRef} />;
 };
+
 Chart.register(...registerables);
-export default DataChart;
+
+export default memo(DataChart);

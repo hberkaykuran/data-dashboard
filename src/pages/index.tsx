@@ -7,7 +7,9 @@ export default function Home() {
   const { data: session } = useSession();
   return (
     <>
-      <main className={scss.main}>{session ? <Dashboard /> : <Login />}</main>
+      <main className={`${scss.main} ${scss.customScrollbar}`}>
+        {session ? <Dashboard /> : <Login />}
+      </main>
     </>
   );
 }

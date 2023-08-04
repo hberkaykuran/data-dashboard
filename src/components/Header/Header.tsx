@@ -5,17 +5,15 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useSession, signIn, signOut } from "next-auth/react";
 import ToggleThemeButton from "@/components/ToggleThemeButton";
-import { Context } from "react";
-import { useMediaQuery } from "@mui/material";
+import { Context, useState } from "react";
+import { Button, Link, useMediaQuery, useTheme } from "@mui/material";
 
 const pages = ["Products", "Pricing", "Blog"];
 export type HeaderProps = {
@@ -25,22 +23,11 @@ export type HeaderProps = {
 function Header({ ColorModeContext }: HeaderProps) {
   const { data: session } = useSession();
   const tabletCheck = useMediaQuery("(min-width:768px)");
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
+  const theme = useTheme();
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = () => {
@@ -48,60 +35,94 @@ function Header({ ColorModeContext }: HeaderProps) {
   };
 
   return (
-    <AppBar position="static" sx={{ marginBottom: "40px" }}>
+    <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
+          <Box
+            display="flex"
+            flexDirection="row"
+            alignItems="center"
+            marginRight="auto"
           >
-            DupeX
-          </Typography>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            DupeX
-          </Typography>
-          {tabletCheck && (
-            <Box sx={{ marginRight: 2, marginLeft: "auto" }}>
-              <Typography>Signed in as {session?.user?.email}</Typography>
-            </Box>
-          )}
+            <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              href="/"
+              sx={{
+                mr: 2,
+                display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
+              }}
+            >
+              DupeX
+            </Typography>
+            <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+            <Typography
+              variant="h5"
+              noWrap
+              component="a"
+              href=""
+              sx={{
+                mr: 2,
+                display: { xs: "flex", md: "none" },
+                flexGrow: 1,
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
+              }}
+            >
+              DupeX
+            </Typography>
+          </Box>
           <ToggleThemeButton ColorModeContext={ColorModeContext} />
-          <Box sx={{ flexGrow: 0 }}>
+          <Box
+            sx={{
+              flexGrow: 0,
+            }}
+          >
             <Tooltip title="Open profile settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <Button
+                onClick={handleOpenUserMenu}
+                sx={{ p: 0, display: "flex", flexDirection: "row", gap: "8px" }}
+              >
                 <Avatar
                   src={session?.user?.image ?? undefined}
                   alt={session?.user?.name ?? undefined}
                 />
-              </IconButton>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "start",
+                  }}
+                >
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: "#fff",
+                    }}
+                  >
+                    {session?.user?.name}
+                  </Typography>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{
+                      color: "#d3d3d3",
+                      fontSize: "0.5rem",
+                    }}
+                  >
+                    {session?.user?.email}
+                  </Typography>
+                </Box>
+              </Button>
             </Tooltip>
             <Menu
               sx={{ mt: "45px" }}
@@ -119,6 +140,17 @@ function Header({ ColorModeContext }: HeaderProps) {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
+              <MenuItem>
+                <Link
+                  href="/dashboard/profile"
+                  style={{
+                    color: theme.palette.text.primary,
+                    textDecoration: "none",
+                  }}
+                >
+                  <Typography textAlign="center">Profile</Typography>
+                </Link>
+              </MenuItem>
               <MenuItem
                 onClick={() => {
                   return session ? signOut() : signIn();

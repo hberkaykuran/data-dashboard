@@ -4,6 +4,7 @@ import SideMenu from "../SideMenu";
 import Head from "next/head";
 import scss from "./Layout.module.scss";
 import Footer from "@/components/Footer";
+import { Box } from "@mui/material";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { data: session } = useSession();
@@ -17,10 +18,10 @@ const Layout = ({ children }: { children: ReactNode }) => {
       </Head>
       <main
         className={scss.layout}
-        style={{ padding: session ? "0 24px 0 80px" : "" }}
+        style={{ padding: session ? "0 24px 0 80px" : "0 0 0 0" }}
       >
         {session && <SideMenu />}
-        {children}
+        <Box flexGrow={"1"}>{children}</Box>
         <Footer />
       </main>
     </>

@@ -10,7 +10,8 @@ export const lineChartData = {
             data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56],
             fill: false,
             borderColor: "rgb(75, 192, 192)",
-            tension: 0.1,
+            tension: 0.4,
+            
         },
     ],
 };
@@ -21,8 +22,10 @@ export const doughnutChartData = {
         {
             label: "Transactions Dataset",
             data: [300, 50, 100],
-            backgroundColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)", "rgb(255, 205, 86)"],
+            backgroundColor: ["#4bc0c0", "#348a8a", "#1d5353"],
             hoverOffset: 4,
+            // gray label color
+            color: "#fff",
         },
     ],
 };

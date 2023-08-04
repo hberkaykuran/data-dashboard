@@ -7,7 +7,7 @@ import TransactionsBottomRow from "@/components/Dashboard/TransactionsBottomRow"
 const Dashboard = () => {
   return (
     <Box>
-      <Grid container gap={4} marginTop={2}>
+      <Grid container gap={2} marginTop={2}>
         <DataRibbon />
         <TransactionsPerDay />
         <TransactionsBottomRow />

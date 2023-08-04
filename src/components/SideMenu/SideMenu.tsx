@@ -122,6 +122,7 @@ const SideMenu = () => {
                   sx={{
                     color: theme.palette.text.primary,
                     opacity: open ? 1 : 0,
+                    textDecorationColor: "transparent",
                   }}
                 />
               </ListItemButton>
